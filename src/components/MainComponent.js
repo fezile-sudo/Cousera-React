@@ -1,28 +1,45 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
+import Home from './HomeComponent';
 import Menu from './MenuComponent';
 import DishDetail from './DishdetailComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import { DISHES } from '../shared/dishes';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
-const Main = () => {
-  const [dishes] = useState(DISHES);
-  const [selectedDish, setSelectedDish] = useState(null);
+class Main extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dishes: DISHES,
+      selectedDish: null
+    };
+  }
 
-  const onDishSelect = (dishId) => {
-    setSelectedDish(dishId);
+  onDishSelect = (dishId) => {
+    this.setState({ selectedDish: dishId });
   };
 
-  return (
-    <div>
-    <Header /> 
-     
-      <Menu dishes={dishes} onClick={onDishSelect} />
-      <DishDetail dish={dishes.filter((dish) => dish.id === selectedDish)[0]} />
+  render() {
+    const HomePage = () => <Home />;
 
-    <Footer /> 
-    </div>
-  );
-};
+    return (
+      <div>
+        <Header />
+        <Routes>
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/menu" element={<Menu dishes={this.state.dishes} onClick={this.onDishSelect} />} />
+              <Route path="*" element={<Navigate to="/home" />} />
+        </Routes>
+        <DishDetail
+          dish={this.state.dishes.find(
+            (dish) => dish.id === this.state.selectedDish
+          )}
+        />
+        <Footer />
+      </div>
+    );
+  }
+}
 
 export default Main;
