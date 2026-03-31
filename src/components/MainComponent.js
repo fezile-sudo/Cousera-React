@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Home from './HomeComponent';
 import Menu from './MenuComponent';
 import Contact from './ContactComponent';
+import About from './AboutComponent';
 import DishDetail from './DishdetailComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
@@ -49,9 +50,12 @@ class Main extends Component {
               <Route exact path="/menu" element={<Menu dishes={this.state.dishes} onClick={this.onDishSelect} />} />
               <Route path='/menu/:dishId' element={DishWithId} />
               <Route path="/contactus" element={<Contact />} />
+              <Route path="/aboutus" element={<About leaders={this.state.leaders} />}
+            />
               <Route path="*" element={<Navigate to="/home" />} />
               
         </Routes>
+        
         <DishDetail
           dish={this.state.dishes.find(
             (dish) => dish.id === this.state.selectedDish
