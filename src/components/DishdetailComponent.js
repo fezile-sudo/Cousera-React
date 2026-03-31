@@ -1,5 +1,6 @@
 import React from 'react';
-import { Card, CardImg, CardBody, CardText, CardTitle } from 'reactstrap';
+import { Card, CardImg, CardBody, CardText, CardTitle, Breadcrumb, BreadcrumbItem  } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 function RenderComments({ comments }) {
     if (!comments) {
@@ -53,8 +54,8 @@ const DishDetail = (props) => {
     }
     return (
         <div className="row">
-            <RenderDish dish={dish} />
-            <RenderComments comments={dish.comments} />
+            <RenderDish dish={props.dish} />
+            <RenderComments comments={props.comments} />
         </div>
     );
 };
