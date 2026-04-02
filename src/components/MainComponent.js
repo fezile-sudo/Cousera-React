@@ -6,65 +6,58 @@ import About from './AboutComponent';
 import DishDetail from './DishdetailComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
-import { DISHES } from '../shared/dishes';
-import { COMMENTS } from '../shared/comments';
-import { LEADERS } from '../shared/leaders';
-import { PROMOTIONS } from '../shared/promotions';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useParams } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+const mapStateToProps = (state) => ({
+  dishes: state.dishes,
+  comments: state.comments,
+  promotions: state.promotions,
+  leaders: state.leaders
+});
+
+const DishWithId = (props) => {
+  const { dishId } = useParams();
+  return (
+    <DishDetail
+      dish={props.dishes.find((dish) => dish.id === parseInt(dishId, 10))}
+      comments={props.comments.filter((comment) => comment.dishId === parseInt(dishId, 10))}
+    />
+  );
+};
 
 class Main extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dishes: DISHES,
-      selectedDish: null,
-      comments: COMMENTS,
-      promotions: PROMOTIONS,
-      leaders: LEADERS
-    };
-  }
+  state = { selectedDish: null };
 
   onDishSelect = (dishId) => {
     this.setState({ selectedDish: dishId });
   };
 
   render() {
-    const HomePage = () => <Home dish={this.state.dishes.filter((dish) => dish.featured)[0]}
-              promotion={this.state.promotions.filter((promo) => promo.featured)[0]}
-              leader={this.state.leaders.filter((leader) => leader.featured)[0]}
-              />;
-
-
-     const DishWithId = ({match}) => {
-      return(
-          <DishDetail dish={this.state.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]} 
-            comments={this.state.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))} />
-      );
-    };         
+    const HomePage = () => (
+      <Home
+        dish={this.props.dishes.find((dish) => dish.featured)}
+        promotion={this.props.promotions.find((promo) => promo.featured)}
+        leader={this.props.leaders.find((leader) => leader.featured)}
+      />
+    );
 
     return (
       <div>
         <Header />
         <Routes>
-              <Route path="/home" element={<HomePage />} />
-              <Route exact path="/menu" element={<Menu dishes={this.state.dishes} onClick={this.onDishSelect} />} />
-              <Route path='/menu/:dishId' element={DishWithId} />
-              <Route path="/contactus" element={<Contact />} />
-              <Route path="/aboutus" element={<About leaders={this.state.leaders} />}
-            />
-              <Route path="*" element={<Navigate to="/home" />} />
-              
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/menu" element={<Menu dishes={this.props.dishes} onClick={this.onDishSelect} />} />
+          <Route path="/menu/:dishId" element={<DishWithId dishes={this.props.dishes} comments={this.props.comments} />} />
+          <Route path="/contactus" element={<Contact />} />
+          <Route path="/aboutus" element={<About leaders={this.props.leaders} />} />
+          <Route path="*" element={<Navigate to="/home" />} />
         </Routes>
-        
-        <DishDetail
-          dish={this.state.dishes.find(
-            (dish) => dish.id === this.state.selectedDish
-          )}
-        />
+        <DishDetail dish={this.props.dishes.find((dish) => dish.id === this.state.selectedDish)} />
         <Footer />
       </div>
     );
   }
 }
 
-export default Main;
+export default connect(mapStateToProps)(Main);
