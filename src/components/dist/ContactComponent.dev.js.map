@@ -1,1 +1,1 @@
-{"version":3,"sources":["ContactComponent.js"],"names":["Contact"],"mappings":";;;;;;eAEeA,O","sourcesContent":["\r\n\r\nexport default Contact;"],"file":"ContactComponent.dev.js"}
+{"version":3,"sources":[],"names":[],"mappings":"","sourcesContent":[],"file":"ContactComponent.dev.js"}
