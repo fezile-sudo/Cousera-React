@@ -7,13 +7,21 @@ exports.store = void 0;
 
 var _toolkit = require("@reduxjs/toolkit");
 
-var _reducer = _interopRequireDefault(require("./reducer"));
+var _dishes = require("./dishes");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var _comments = require("./comments");
 
-// default export from reducer.js
+var _promotions = require("./promotions");
+
+var _leaders = require("./leaders");
+
 var store = (0, _toolkit.configureStore)({
-  reducer: _reducer["default"]
+  reducer: {
+    dishes: _dishes.Dishes,
+    comments: _comments.Comments,
+    promotions: _promotions.Promotions,
+    leaders: _leaders.Leaders
+  }
 });
 exports.store = store;
 //# sourceMappingURL=configureStore.dev.js.map

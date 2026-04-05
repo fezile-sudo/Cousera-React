@@ -1,6 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
-import reducer from './reducer'; // default export from reducer.js
+import { Dishes } from './dishes';
+import { Comments } from './comments';
+import { Promotions } from './promotions';
+import { Leaders } from './leaders';
 
 export const store = configureStore({
-  reducer
+    reducer: {
+        dishes: Dishes,
+        comments: Comments,
+        promotions: Promotions,
+        leaders: Leaders
+    }
 });
